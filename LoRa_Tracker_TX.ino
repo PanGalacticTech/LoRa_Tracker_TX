@@ -1,5 +1,7 @@
 #include <SPI.h>
 #include <LoRa.h>
+#include "globals.h"
+#include <autoDelay.h>
 
 
 /*
@@ -59,23 +61,54 @@
 */
 
 
+
+
+
+
+
+//-------------------------------------------------VVVVVV----------GPS VARIABLEs and SETTINGS------------------------
+
+
+
+//-------------------------------------------^^^^^^^^^^^^-----------GPS VARIABLEs and SETTINGS------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+autoDelay autodelay;    // set up autodelay instance. Used for time between transmissions
+
+
 char callSign[] = {"SKY1"};
 
-int counter = 0;
+
+long txDelay = 5000;      // time in mS between Tx Packets
+
+
+int counter = 0;                      // Variable to number transmissions
+
+
 
 void setup() {
   Serial.begin(115200);
   while (!Serial);
 
-  Serial.println("LoRa Transmit");
+  loraSetup();
 
-  if (!LoRa.begin(434.5E6)) {                             // sets TX frequency 434.500    E6 = translate to MHz
-    Serial.println("Starting LoRa failed!");
-    delay(500);
-    ESP.restart();
-    while (1);
-  }
+  GPSsetup();
+
 }
+
+
+
 
 
 
@@ -86,34 +119,10 @@ void loop() {
   Serial.print("Sending packet: ");
   Serial.println(counter);
 
+  if (autodelay.delayScript(txDelay)) {
+    loraSendPacket();
+    counter++;
+  }
 
-  loraSendPacket();
-
-  counter++;
-
-  delay(5000);
-}
-
-
-
-
-
-
-
-void loraSendPacket() {
-
-
-  // send packet
-  LoRa.beginPacket();
-
-  LoRa.print(callSign);
-  LoRa.print(" ");
-  LoRa.print(counter);
-  LoRa.print(" ");
-
-  LoRa.print("GPS Data");
-
-  LoRa.endPacket();
-
-
+  // delay(5000);    // Delay now handled by autodelay script
 }
