@@ -62,9 +62,9 @@ void loraSendPacket() {
   LoRa.beginPacket();
 
   LoRa.print(callSign);
-  LoRa.print(" ");
+  LoRa.print(",");
   LoRa.print(counter);
-  LoRa.print(" ");
+  LoRa.print(",");
   LoRa.print(loraBuffer);
  // LoRa.print("");
 
