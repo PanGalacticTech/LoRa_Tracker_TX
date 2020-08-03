@@ -1,3 +1,4 @@
+
 // Test code for Adafruit GPS modules using MTK3329/MTK3339 driver
 //
 // This code shows how to listen to the GPS module in an interrupt
@@ -18,6 +19,7 @@
 #include <SparkFunBME280.h>
 #include <SPI.h>
 #include <LoRa.h>
+#include <ledObject.h>
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,6 +71,13 @@ Adafruit_GPS GPS(&mySerial);
 BME280 bme280; //Global sensor object
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
+//ledObject Constructor
+
+#define ledPin 5                         // Define LED pin. If undefined - defaults to pin 13.
+#define initialState 1                  // Defines if LED pin starts with initial state ON or OFF - defaults to OFF
+
+ledObject txLED;                            // led object is going to be used to denote a transmitted message
+
 
 //####################### AutoDelay Constructors #########################################
 
@@ -100,7 +109,7 @@ void setup() {
   Serial.begin(115200);                   // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
   while (!Serial);
   delay (1000);                                           // also spit it out
-
+ txLED.begin(ledPin, initialState);    // Begin ledObject library by passing the pin of an LED & the initialState
   loraSetup();                                // LoRa Setup Scripts
   GPSsetup();                                 // GPS Setup Scripts
   BME280setup();                               // Atmospheric Setup Scripts
@@ -139,6 +148,7 @@ void loop()  {                  // run over and over again
 
     if (autodelayLoRa.delayScript(LoRaDelay)) {
       sortGPSData();
+      
       loraBuildPacket();
 
       loraSendPacket();
@@ -148,5 +158,7 @@ void loop()  {                  // run over and over again
     }
 
   }
+
+  txLED.performBlink();
 
 }

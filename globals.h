@@ -107,3 +107,7 @@ int16_t speedkmhPost;
 
 int16_t speedmphPre;
 int16_t speedmphPost;
+
+
+int16_t headingPre;
+int16_t headingPost;

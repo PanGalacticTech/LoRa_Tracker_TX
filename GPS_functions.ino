@@ -119,6 +119,8 @@ void sortGPSData() {  // Function sorts data for easier processing later
 
   speedConversion(GPS.speed);
 
+  headingPre = (int16_t)GPS.angle;
+  headingPost = (int16_t)((GPS.angle * (shift / 1000)) - headingPre * (shift / 1000) );
 }
 
 
@@ -170,7 +172,7 @@ void speedConversion (float speedInput) {            // Speed input in Knots
 
 
 
-void  GPSserialPrint() {    // Prints out the main body of GPS data in easy to read format
+  void  GPSserialPrint() {    // Prints out the main body of GPS data in easy to read format
 
   //Serial Print Data
 
@@ -227,7 +229,7 @@ void  GPSserialPrint() {    // Prints out the main body of GPS data in easy to r
   Serial.println(" ");
   Serial.println(" ");
 
-}
+  }
 
 
 
@@ -239,7 +241,7 @@ void  GPSserialPrint() {    // Prints out the main body of GPS data in easy to r
 
 
 
-void GPSserialTestPrint() {               // Used to directly print variables from the GPS library to compare to calculated figures for testing > Not needed unless experiencing math errors & testing
+  void GPSserialTestPrint() {               // Used to directly print variables from the GPS library to compare to calculated figures for testing > Not needed unless experiencing math errors & testing
 
 
 
@@ -249,29 +251,29 @@ void GPSserialTestPrint() {               // Used to directly print variables fr
         Serial.print("    ");
         Serial.println(GPS.longitude, 4);
         Serial.println(" ");
-  */
-  /*
-        // For testing
-        Serial.print(GPS.latitudeDegrees, 4);
-        Serial.print("    ");
-        Serial.println(GPS.longitudeDegrees, 4);
-        Serial.println(" ");
-  */
+*/
+/*
+      // For testing
+      Serial.print(GPS.latitudeDegrees, 4);
+      Serial.print("    ");
+      Serial.println(GPS.longitudeDegrees, 4);
+      Serial.println(" ");
+*/
 
-  /*
-    Serial.println(" ");
-    Serial.println(GPS.altitude, 4);
-    Serial.println(" ");
-  */
-  /*
-        Serial.println(" ");
-        Serial.println(GPS.speed, 2);
-        Serial.println(" ");
-  */
+/*
+  Serial.println(" ");
+  Serial.println(GPS.altitude, 4);
+  Serial.println(" ");
+*/
+/*
+      Serial.println(" ");
+      Serial.println(GPS.speed, 2);
+      Serial.println(" ");
+*/
 
 /*
 
-}
+  }
 
 
 */
