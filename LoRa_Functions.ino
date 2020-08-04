@@ -48,16 +48,24 @@ void loraBuildPacket() {
   // *        [$][CallSign],[PacketType(counter)],[GPS.latitude],[GPS.longitude],[GPS.altitude]
   //Bytes     1     5           3             4(float)    4(float)
 
+
  char packetBuffer[82];
  Serial.println(latitudeDegPre);            // This makes no sense and is annoying AF but no data gets loaded into string if these lines are not here
  Serial.println(" ");                           // This makes literally no sense, I dont get it whatsoever.
 
-  sprintf(packetBuffer, "%s,%i,%i.%i,%i.%i,%i.%i,%i.%i,%i.%i", callSign, counter, latitudeDegPre, latitudeDegPost, longitudeDegPre, longitudeDegPost, altitudePre, altitudePost , speedkmhPre, speedkmhPost, headingPost, headingPre);      // "Basic Data String"
 
-  //nmeaChecksum(loraBuffer);
+if (latitudeDegPre == 0 && longitudeDegPre == 0){                      // If lat & long are reading 0, assume no GPS fix
+
+Serial.println("No GPS Fix");
+
+  sprintf(packetBuffer, "%s,%i,0.0,0.0,0.0,0.0,0.0",callSign, counter);   // Print all values as zero
+
+} else {
+  sprintf(packetBuffer, "%s,%i,%i.%i,%i.%i,%i.%i,%i.%i,%i.%i", callSign, counter, latitudeDegPre, latitudeDegPost, longitudeDegPre, longitudeDegPost, altitudePre, altitudePost , speedkmhPre, speedkmhPost, headingPost, headingPre);      // "Basic Data String"
+}
+
 
 sprintf(loraBuffer, "%s*%i", packetBuffer, nmeaChecksum(packetBuffer));
-
 
 
 
